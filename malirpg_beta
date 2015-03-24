@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>	
+<style>
+canvas {
+	display: block;
+	border:1px solid #c3c3c3;
+	margin: 10px 0 0 30px;
+}
+</style>
+<canvas id="canvas" height="800" width="1200"></canvas> <!--Ako je u style onda linija bude mutna-->
+<script type="text/javascript" src="mapa.json"> </script>
+
+<p id="poz"></p>
+
+<script>
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+
+var lik_sprite = new Image();
+var slika_mape = new Image();
+
+var prvi=true;
+
+function crta_lika () {
+
+	var pozicija_sx=0;
+	var pozicija_sy=0;
+
+	var brzina_lika_y=0;
+	var brzina_lika_x=0;
+
+	var key_map = []; 
+	onkeydown = onkeyup = function(e){
+		e = e || event; // event zbog internet exp
+		key_map[e.keyCode] = e.type == 'keydown';
+		
+		prvi=false;
+
+		pozicija_sy++;
+		if (pozicija_sy>2) pozicija_sy=0;
+ 
+		if (key_map[40]) {pozicija_sx=0; brzina_lika_y+=8; lik_hoda ("dolje");}
+		else if (key_map[38]) {pozicija_sx=1; brzina_lika_y-=8; lik_hoda ("gore");}
+		else if (key_map[37]) {pozicija_sx=2; brzina_lika_x-=8; lik_hoda ("lijevo");}
+		else if (key_map[39]) {pozicija_sx=3; brzina_lika_x+=8; lik_hoda ("desno");}
+		else {pozicija_sy=0; }
+
+		if(!key_map[40] && !key_map[38] && !key_map[37] && !key_map[39]) {pozicija_sy=0; lik_hoda ();}
+	}
+	
+	function lik_hoda (smjer) {
+		context.clearRect ( 0 , 0 , canvas.width, canvas.height );
+		crta_mapu ();
+
+		var lik = {	sx: [0, 32, 64, 96],
+				sy: [0, 32, 64],
+				sw: 32,
+				sh: 32,
+				dx: canvas.width/2,
+				dy: canvas.height/2,
+				dw: 32,
+				dh: 32	
+		};
+
+		context.drawImage(	lik_sprite,		
+					lik.sx[pozicija_sx],
+					lik.sy[pozicija_sy],
+					lik.sw,		
+					lik.sh, 		
+					lik.dx+brzina_lika_x,		
+					lik.dy+brzina_lika_y, 		
+					lik.dw, 		
+					lik.dh);
+
+		for (i=0; i<mapa.x.length; i++) {   //kolizija 
+			if (mapa.x[i]>lik.dx+brzina_lika_x && mapa.x[i]<lik.dx+lik.dw+brzina_lika_x && 
+			    mapa.y[i]>lik.dy+brzina_lika_y && mapa.y[i]<lik.dy+lik.dh+brzina_lika_y && 
+			    mapa.prepreka[i]) {
+				
+				if (smjer=="dolje") brzina_lika_y-=8;
+				else if (smjer=="gore") brzina_lika_y+=8;
+				else if (smjer=="lijevo") brzina_lika_x+=8;
+				else if (smjer=="desno") brzina_lika_x-=8;
+				document.getElementById("poz").innerHTML = "Ne znam plivati"; 
+			}
+		}
+
+	};
+
+	lik_hoda ();
+}
+
+//MAPA: json parse pretvori mapu .json u odgovarajuci format za js i to postane objekt mapa
+
+var jmapa = JSON.parse(mapa1);
+var mapa = {	x: jmapa[0].x, 
+		y: jmapa[0].y, 
+		prepreka: jmapa[0].prepreka
+
+};
+
+function crta_mapu () { 
+
+	context.drawImage(slika_mape,0,0);
+	if (prvi) context.drawImage(lik_sprite,0,0, 32, 32, canvas.width/2, canvas.height/2, 32, 32);
+
+};
+
+slika_mape.src = 'mapa.png';
+slika_mape.onload = function() {	crta_mapu(this); };
+
+lik_sprite.src = 'liksprite.png';
+lik_sprite.onload = function() {	crta_lika(this); };
+
+</script>
+
+</body>
+</html>
