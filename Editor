@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>	
+<style>
+canvas {
+	display: block;
+	border:1px solid #c3c3c3;
+	margin: 10px 0 0 30px;
+}
+
+#kon {
+	width: 1216px;
+	height: 50px;
+	margin-left: 30px;
+}
+
+.dugme {
+	width: 150px;
+	height: 20px;
+	padding: 2px 10px; 
+	background-color: #dddddd;
+	border-radius: 5px;
+	float: left;
+	border-bottom-left-radius: 0em;
+	border-bottom-right-radius: 0em;
+}
+
+.dolje {
+	width: 1200px;
+	height: 40px;
+	padding: 0px 10px; 
+	background-color: #dddddd;
+
+	text-align: left;
+	overflow-y:scroll;
+	direction: rtl;
+}
+
+#objekti {
+	display: none;
+}
+
+img:hover {
+	border: 1px solid red;
+}
+
+</style>
+<canvas id="canvas" height="800" width="1216"></canvas> <!--Ako je u style onda linija bude mutna-->
+<br>
+<div id="kon">
+	<div class="dugme" align="center" onclick="vidljivost('podovi')"> 16 bit </div>
+	<div class="dugme" align="center" onclick="vidljivost('objekti')"> Objekti</div>
+	<div class="dugme"> Mreža: <input type="checkbox" id="prikazi" checked> </div>
+	<div class="dugme" align="center" onclick="spremisliku()"> Spremi sliku: </div>
+
+	<div style="float:left" class="dugme"> 
+		<a download="mapa.json" id="d_json" style="visibility: hidden">1) Data &nbsp;</a> 
+		<a download="mapa.png" id="d_slika" style="visibility: hidden">&nbsp; 2) Slika</a>
+	</div>
+
+	<br>
+
+	<div class="dolje">
+		 <div id="podovi" aling="left">		
+		<img src="16bit/1_cesta-cesta.png" onclick="izvor('16bit/1_cesta-cesta.png', false)">
+		<img src="16bit/1_cesta-pustinjaB.png" onclick="izvor('16bit/1_cesta-pustinjaB.png', false)">
+		<img src="16bit/1_cesta-pustinjaL.png" onclick="izvor('16bit/1_cesta-pustinjaL.png', false)">
+		<img src="16bit/1_cesta-pustinjaR.png" onclick="izvor('16bit/1_cesta-pustinjaR.png', false)">
+		<img src="16bit/1_cesta-pustinjaU.png" onclick="izvor('16bit/1_cesta-pustinjaU.png', false)">
+		<img src="16bit/1_cesta-pustinja-rubBL.png" onclick="izvor('16bit/1_cesta-pustinja-rubBL.png', false)">
+		<img src="16bit/1_cesta-pustinja-rubBR.png" onclick="izvor('16bit/1_cesta-pustinja-rubBR.png', false)">
+		<img src="16bit/1_cesta-pustinja-rubUL.png" onclick="izvor('16bit/1_cesta-pustinja-rubUL.png', false)">
+		<img src="16bit/1_cesta-pustinja-rubUR.png" onclick="izvor('16bit/1_cesta-pustinja-rubUR.png', false)">
+
+		<img src="16bit/2_cesta-travaB.png" onclick="izvor('16bit/2_cesta-travaB.png', false)">
+		<img src="16bit/2_cesta-travaL.png" onclick="izvor('16bit/2_cesta-travaL.png', false)">
+		<img src="16bit/2_cesta-travaR.png" onclick="izvor('16bit/2_cesta-travaR.png', false)">
+		<img src="16bit/2_cesta-travaU.png" onclick="izvor('16bit/2_cesta-travaU.png', false)">
+		<img src="16bit/2_cesta-trava-rubBL.png" onclick="izvor('16bit/2_cesta-trava-rubBL.png', false)">
+		<img src="16bit/2_cesta-trava-rubBR.png" onclick="izvor('16bit/2_cesta-trava-rubBR.png', false)">
+		<img src="16bit/2_cesta-trava-rubUL.png" onclick="izvor('16bit/2_cesta-trava-rubUL.png', false)">
+		<img src="16bit/2_cesta-trava-rubUR.png" onclick="izvor('16bit/2_cesta-trava-rubUR.png', false)">
+
+		<img src="16bit/3_pustinja-pustinja.png" onclick="izvor('16bit/3_pustinja-pustinja.png', false)">
+		<img src="16bit/3_pustinja-travaB.png" onclick="izvor('16bit/3_pustinja-travaB.png', false)">
+		<img src="16bit/3_pustinja-travaL.png" onclick="izvor('16bit/3_pustinja-travaL.png', false)">
+		<img src="16bit/3_pustinja-travaR.png" onclick="izvor('16bit/3_pustinja-travaR.png', false)">
+		<img src="16bit/3_pustinja-travaU.png" onclick="izvor('16bit/3_pustinja-travaU.png', false)">
+		<img src="16bit/3_pustinja-trava-rubBL.png" onclick="izvor('16bit/3_pustinja-trava-rubBL.png', false)">
+		<img src="16bit/3_pustinja-trava-rubBR.png" onclick="izvor('16bit/3_pustinja-trava-rubBR.png', false)">
+		<img src="16bit/3_pustinja-trava-rubUL.png" onclick="izvor('16bit/3_pustinja-trava-rubUL.png', false)">
+		<img src="16bit/3_pustinja-trava-rubUR.png" onclick="izvor('16bit/3_pustinja-trava-rubUR.png', false)">
+
+		<img src="16bit/5_trava-pustinja-rubBL.png" onclick="izvor('16bit/5_trava-pustinja-rubBL.png', false)">
+		<img src="16bit/5_trava-pustinja-rubBR.png" onclick="izvor('16bit/5_trava-pustinja-rubBR.png', false)">
+		<img src="16bit/5_trava-pustinja-rubUL.png" onclick="izvor('16bit/5_trava-pustinja-rubUL.png', false)">
+		<img src="16bit/5_trava-pustinja-rubUR.png" onclick="izvor('16bit/5_trava-pustinja-rubUR.png', false)">
+
+		<img src="16bit/4_trava-trava.png" onclick="izvor('16bit/4_trava-trava.png', false)">
+		<img src="16bit/6_trava-cvijet1.png" onclick="izvor('16bit/6_trava-cvijet1.png', false)">
+		<img src="16bit/6_trava-cvijet2.png" onclick="izvor('16bit/6_trava-cvijet2.png', false)">
+		<img src="16bit/6_trava-cvijet3.png" onclick="izvor('16bit/6_trava-cvijet3.png', false)">
+		<img src="16bit/6_trava-cvijet4.png" onclick="izvor('16bit/6_trava-cvijet4.png', false)">
+		<img src="16bit/6_trava-cvijet5.png" onclick="izvor('16bit/6_trava-cvijet5.png', false)">
+		<img src="16bit/6_trava-cvijet6.png" onclick="izvor('16bit/6_trava-cvijet6.png', false)">
+		<img src="16bit/6_trava-cvijet7.png" onclick="izvor('16bit/6_trava-cvijet7.png', false)">
+		<img src="16bit/6_trava-cvijet-rubBL.png" onclick="izvor('16bit/6_trava-cvijet-rubBL.png', false)">
+		<img src="16bit/6_trava-cvijet-rubBR.png" onclick="izvor('16bit/6_trava-cvijet-rubBR.png', false)">
+		<img src="16bit/6_trava-cvijet-rubUL.png" onclick="izvor('16bit/6_trava-cvijet-rubUL.png', false)">
+		<img src="16bit/6_trava-cvijet-rubUR.png" onclick="izvor('16bit/6_trava-cvijet-rubUR.png', false)">
+		<br>
+		<img src="16bit/3_pustinja-vodaB.png" onclick="izvor('16bit/3_pustinja-vodaB.png', false)">
+		<img src="16bit/3_pustinja-vodaL.png" onclick="izvor('16bit/3_pustinja-vodaL.png', false)">
+		<img src="16bit/3_pustinja-vodaR.png" onclick="izvor('16bit/3_pustinja-vodaR.png', false)">
+		<img src="16bit/3_pustinja-vodaU.png" onclick="izvor('16bit/3_pustinja-vodaU.png', false)">
+		<img src="16bit/3_pustinja-voda-rubBL.png" onclick="izvor('16bit/3_pustinja-voda-rubBL.png', false)">
+		<img src="16bit/3_pustinja-voda-rubBR.png" onclick="izvor('16bit/3_pustinja-voda-rubBR.png', false)">
+		<img src="16bit/3_pustinja-voda-rubUL.png" onclick="izvor('16bit/3_pustinja-voda-rubUL.png', false)">
+		<img src="16bit/3_pustinja-voda-rubUR.png" onclick="izvor('16bit/3_pustinja-voda-rubUR.png', false)">
+
+		<img src="16bit/8_voda-pustinja-rubBL.png" onclick="izvor('16bit/8_voda-pustinja-rubBL.png', false)">
+		<img src="16bit/8_voda-pustinja-rubBR.png" onclick="izvor('16bit/8_voda-pustinja-rubBR.png', false)">
+		<img src="16bit/8_voda-pustinja-rubUL.png" onclick="izvor('16bit/8_voda-pustinja-rubUL.png', false)">
+		<img src="16bit/8_voda-pustinja-rubUR.png" onclick="izvor('16bit/8_voda-pustinja-rubUR.png', false)">
+
+		<img src="16bit/8_voda-voda.png" onclick="izvor('16bit/8_voda-voda.png', true)">
+		<img src="16bit/7_dubokavoda-dubokavoda.png" onclick="izvor('16bit/7_dubokavoda-dubokavoda.png', true)">
+		<img src="16bit/7_dubokavoda-vodaB.png" onclick="izvor('16bit/7_dubokavoda-vodaB.png', true)">
+		<img src="16bit/7_dubokavoda-vodaL.png" onclick="izvor('16bit/7_dubokavoda-vodaL.png', true)">
+		<img src="16bit/7_dubokavoda-vodaR.png" onclick="izvor('16bit/7_dubokavoda-vodaR.png', true)">
+		<img src="16bit/7_dubokavoda-vodaU.png" onclick="izvor('16bit/7_dubokavoda-vodaU.png', true)">
+		<img src="16bit/7_dubokavoda-voda-rubBL.png" onclick="izvor('16bit/7_dubokavoda-voda-rubBL.png', true)">
+		<img src="16bit/7_dubokavoda-voda-rubBR.png" onclick="izvor('16bit/7_dubokavoda-voda-rubBR.png', true)">
+		<img src="16bit/7_dubokavoda-voda-rubUL.png" onclick="izvor('16bit/7_dubokavoda-voda-rubUL.png', true)">
+		<img src="16bit/7_dubokavoda-voda-rubUR.png" onclick="izvor('16bit/7_dubokavoda-voda-rubUR.png', true)">
+
+		<img src="16bit/8_voda-dubokavoda-rubBL.png" onclick="izvor('16bit/8_voda-dubokavoda-rubBL.png', true)">
+		<img src="16bit/8_voda-dubokavoda-rubBR.png" onclick="izvor('16bit/8_voda-dubokavoda-rubBR.png', true)">
+		<img src="16bit/8_voda-dubokavoda-rubUL.png" onclick="izvor('16bit/8_voda-dubokavoda-rubUL.png', true)">
+		<img src="16bit/8_voda-dubokavoda-rubUR.png" onclick="izvor('16bit/8_voda-dubokavoda-rubUR.png', true)">
+		</div>
+
+		<div aling="left" id="objekti"> Tu će biti kuce, drvece ...</div>
+
+	</div>
+
+</div>
+
+<script>
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+
+var tilesets = new Image();		//tilesets se sastoji od puno malih slika od 16 ili 32 bita...
+var komplet = new Image();		//...oni naprave konacnu sliku
+
+var spremi_mapu_x=[];
+var spremi_mapu_y=[];
+var spremi_izvor=[];
+var spremi_prepreku=[];
+
+function vidljivost(meni) {		//ima dva ista div taga od kojih samo jedan može biti vidljiv 
+	if (meni=="podovi") {
+		document.getElementById('podovi').style.display = "inline";
+		document.getElementById('objekti').style.display = "none";
+	} else if (meni=="objekti") {
+		document.getElementById('objekti').style.display = "inline";
+		document.getElementById('podovi').style.display = "none";
+	}
+}
+
+var prepreka=true;
+function izvor (inp, prolaz) { 
+	tilesets.src=inp;
+	prepreka=prolaz;
+	}
+
+function mreza_editor() {
+
+	var pokazi_mrezu=document.getElementById("prikazi").checked;
+
+	var lx = canvas.width/76;
+	var ly = canvas.height/50;
+
+	var bit32x=0;
+	var bit32y=0;
+
+	if(pokazi_mrezu) {
+
+		for (var i=0; i<76; i++) {
+
+			context.beginPath();
+			if (bit32x%2) context.lineWidth="1";
+			else context.lineWidth="0.5";		
+			context.strokeStyle="black";
+			context.moveTo(lx, 0);
+			context.lineTo(lx, canvas.height);
+			context.stroke();
+
+			lx += canvas.width/76;
+			bit32x++;
+		}
+
+		for (var i=0; i<50; i++) {
+			context.beginPath();
+			if (bit32y%2) context.lineWidth="1";
+			else context.lineWidth="0.5";	
+			context.strokeStyle="black";
+			context.moveTo(0, ly);
+			context.lineTo(canvas.width, ly);
+			context.stroke();
+
+			ly += canvas.height/50;
+			bit32y++;
+		}
+
+	}
+		
+	for (var i=0; i<spremi_mapu_x.length; i++) {
+		komplet.src=spremi_izvor[i];
+		context.drawImage(komplet, spremi_mapu_x[i], spremi_mapu_y[i]);
+	}
+}
+
+canvas.addEventListener('mousemove', function(e) {
+	context.clearRect ( 0 , 0 , canvas.width, canvas.height );
+	for (var i=0; i<76; i++) {		
+		if (e.clientX>=i*(canvas.width/76)+40 && e.clientX<(i+1)*canvas.width/76+40) {
+		var rec_x=i*(canvas.width/76);
+		}
+	}
+	
+	for (var i=0; i<50; i++) {
+		if (e.clientY>=i*(canvas.height/50)+10 && e.clientY<(i+1)*canvas.height/50+10) {
+			var rec_y=i*(canvas.height/50);
+		}
+	}
+
+	context.drawImage(tilesets, rec_x, rec_y);
+	mreza_editor();
+} );
+
+canvas.addEventListener('click', function(e) {
+	spremi_izvor.push(tilesets.src);
+	for (var i=0; i<76; i++) {		
+		if (e.clientX>=i*(canvas.width/76)+40 && e.clientX<(i+1)*canvas.width/76+40) {
+			var rec_x=i*(canvas.width/76);
+			spremi_mapu_x.push(rec_x);
+			spremi_prepreku.push(prepreka);
+		}
+	}
+	
+	for (var i=0; i<50; i++) {
+		if (e.clientY>=i*(canvas.height/50)+10 && e.clientY<(i+1)*canvas.height/50+10) {
+			var rec_y=i*(canvas.height/50);
+			spremi_mapu_y.push(rec_y);
+		}
+	}
+
+	for (j=0; j<spremi_mapu_x.length-1; j++) { 
+		if (rec_x==spremi_mapu_x[j] && rec_y==spremi_mapu_y[j]) {
+			spremi_mapu_x.splice(j, 1);
+			spremi_mapu_y.splice(j, 1);
+			spremi_izvor.splice(j, 1);
+			spremi_prepreku.splice(j, 1);
+		}
+	}
+
+} );
+
+function spremisliku () {
+
+	var slika = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+
+	var link_slika = document.getElementById('d_slika');
+	link_slika.href = slika;
+	link_slika.style.visibility = 'visible';
+
+
+	var mapa = {	x: spremi_mapu_x, 
+			y: spremi_mapu_y, 
+			prepreka: spremi_prepreku};
+
+	var mapa_json = JSON.stringify(mapa);
+
+	var data = new Blob(["mapa1='["+mapa_json+"]';"], {type: 'application/octet-binary'})
+	var file = window.URL.createObjectURL(data);
+
+	var link_json = document.getElementById('d_json');
+	link_json.href = file;
+	link_json.style.visibility = 'visible';
+}
+
+mreza_editor();
+tilesets.src = '16bit/8_voda-voda.png';		//default slika
+</script>
+</body>
+</html>
